@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="account">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="search.html">Search</a>
+        <a class="nav-button" href="buyer.html">Buyer</a>
+        <a class="nav-button" href="seller.html">Seller</a>
+        <a class="nav-button" href="messages.html">Messages</a>
+        <a class="nav-button" href="settings.html">Settings</a>
+        <a class="nav-button" id="logout-btn" href="#" style="cursor:pointer;">Logout</a>
+      </nav>
+      <span id="nav-user-status" class="badge">Guest</span>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <section class="hero" style="padding-top:0;">
+      <div class="hero-copy">
+        <p class="badge">Your Account</p>
+        <h1>Account Dashboard</h1>
+        <p>Manage your profile, preferences, and access your personal dashboard.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h4 id="account-role-title">Account Type</h4>
+          <p id="account-role-desc">Loading your account details...</p>
+        </div>
+        <div class="hero-card">
+          <h4>Quick Links</h4>
+          <p>• <a href="settings.html">Account Settings</a><br>• <a href="invoices.html">My Invoices</a><br>• <a href="messages.html">Messages</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-grid" style="margin-top:2rem;">
+      <div class="section-panel">
+        <h3 id="user-name">Welcome to EcoShop</h3>
+        <div id="account-content" style="min-height:200px;">
+          <p>Please <a href="login.html">login</a> or <a href="signup.html">create an account</a> to access your dashboard.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Professional buyer and seller accounts. Enterprise-grade platform.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
