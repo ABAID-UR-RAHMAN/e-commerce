@@ -1,0 +1,25 @@
+node_modules/
+package-lock.json
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+*.log
+logs/
+
+.DS_Store
+Thumbs.db
+.Thumbs.db
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+dist/
+build/
+coverage/
+
+# Keep data folder tracked (contains demo JSON stores)
+# data/
