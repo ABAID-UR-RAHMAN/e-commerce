@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoices | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="invoices">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="buyer.html">Buyer</a>
+        <a class="nav-button" href="seller.html">Seller</a>
+        <a class="nav-button" href="settings.html">Settings</a>
+        <a class="nav-button" href="account.html">Account</a>
+        <span id="nav-user-status" class="badge">Guest</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <section class="section-panel">
+      <div class="section-title">Invoice center</div>
+      <p>Review purchase receipts, status updates, and downloadable invoice details in one simple bill management page.</p>
+    </section>
+
+    <section style="margin-top:1.5rem;">
+      <div id="invoice-list" class="cards-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Complete order history. Downloadable invoices. Payment tracking.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
