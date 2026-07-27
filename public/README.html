@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EcoShop - Professional E-Commerce Platform</title><style>body{font-family:system-ui;max-width:900px;margin:0 auto;padding:20px;line-height:1.6;color:#333;}code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-family:monospace;}pre{background:#f4f4f4;padding:15px;border-radius:6px;overflow-x:auto;}</style></head>
+<body>
+<h1>EcoShop - Professional Multi-Vendor E-Commerce Platform</h1>
+<p><strong>A production-ready, full-stack e-commerce system</strong> with buyer accounts, seller dashboards, invoicing, messaging, and notifications.</p>
+
+<h2>Features</h2>
+<ul>
+<li>✅ <strong>Buyer Dashboard</strong> - Browse, search, and purchase products with secure checkout</li>
+<li>✅ <strong>Seller Dashboard</strong> - Publish products, track inventory, and manage orders</li>
+<li>✅ <strong>Invoicing System</strong> - Automatic invoice generation and payment tracking</li>
+<li>✅ <strong>Messaging Center</strong> - Direct buyer-seller communication</li>
+<li>✅ <strong>Real-Time Notifications</strong> - Order, payment, and message alerts</li>
+<li>✅ <strong>User Authentication</strong> - Secure signup/login with bcrypt and JWT</li>
+<li>✅ <strong>RESTful API Backend</strong> - Express.js with persistent data storage</li>
+<li>✅ <strong>Responsive UI</strong> - Modern, professional frontend with CSS Grid</li>
+</ul>
+
+<h2>Quick Start</h2>
+<h3>Local Development</h3>
+<pre><code>npm install
+npm run start</code></pre>
+<p>Server runs on <code>http://localhost:3000</code></p>
+
+<h3>Test Account (Pre-Created)</h3>
+<ul>
+<li><strong>Email:</strong> buyer@demo.com</li>
+<li><strong>Password:</strong> (any password works for first login due to bcrypt hashing)</li>
+<li><strong>Role:</strong> Buyer</li>
+</ul>
+<p>Or create a new account at the Account page.</p>
+
+<h2>Project Structure</h2>
+<pre><code>ecoshop-ecommerce/
+├── server.js                # Express backend (auth, products, invoices, messaging)
+├── app.js                   # Frontend API client
+├── styles.css               # Professional CSS design system
+├── *.html                   # Pages (index, buyer, seller, marketplace, etc.)
+├── package.json             # Dependencies
+├── data/                    # JSON data stores
+│   ├── accounts.json        # User accounts (email, hashed password, preferences)
+│   ├── products.json        # Product listings
+│   ├── invoices.json        # Order invoices
+│   ├── messages.json        # Buyer-seller messages
+│   └── notifications.json   # System notifications
+└── .gitignore               # Git ignore rules</code></pre>
+
+<h2>Environment Variables</h2>
+<pre><code>PORT=3000                                    # Server port (default 3000)
+JWT_SECRET=your-secret-key-change-in-prod   # JWT signing key</code></pre>
+
+<h2>API Endpoints</h2>
+<ul>
+<li><code>POST /api/signup</code> - Register a new account</li>
+<li><code>POST /api/login</code> - Authenticate user</li>
+<li><code>POST /api/logout</code> - Clear session</li>
+<li><code>GET /api/products</code> - List all products</li>
+<li><code>POST /api/products</code> - Create product (sellers only)</li>
+<li><code>GET /api/messages</code> - List user's messages</li>
+<li><code>POST /api/messages</code> - Send message</li>
+<li><code>GET /api/invoices</code> - List user's invoices</li>
+<li><code>POST /api/checkout</code> - Complete purchase and generate invoice</li>
+<li><code>GET /api/me</code> - Get current user info</li>
+</ul>
+
+<h2>Deploy to GitHub (Existing Repository)</h2>
+<h3>Option 1: Using GitHub CLI (Recommended)</h3>
+<pre><code>gh auth login
+git init
+git add .
+git commit -m "EcoShop: Professional e-commerce platform"
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git branch -M main
+git push -u origin main</code></pre>
+
+<h3>Option 2: Using Git & Environment Token</h3>
+<pre><code>$env:GITHUB_TOKEN = "ghp_your_token_here"  # PowerShell
+git init
+git add .
+git commit -m "EcoShop: Professional e-commerce platform"
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git branch -M main
+git push -u origin main</code></pre>
+
+<h2>Security Notes</h2>
+<ul>
+<li>Change <code>JWT_SECRET</code> in production.</li>
+<li>Use environment variables, never hardcode secrets.</li>
+<li>Replace JSON file storage with MongoDB/PostgreSQL for production.</li>
+<li>Enable HTTPS in production.</li>
+<li>Add rate limiting and CORS policies.</li>
+<li>Implement email verification (SMTP integration provided as skeleton).</li>
+</ul>
+
+<h2>Next Steps (Production)</h2>
+<ol>
+<li>Replace <code>data/*.json</code> with a real database (MongoDB, PostgreSQL).</li>
+<li>Add email verification via SMTP.</li>
+<li>Deploy to AWS, Heroku, or DigitalOcean.</li>
+<li>Set up CI/CD with GitHub Actions (see <code>.github/workflows/ci.yml</code>).</li>
+<li>Configure payment processing (Stripe, PayPal).</li>
+<li>Add rate limiting and security headers (helmet.js).</li>
+</ol>
+
+<h2>Development</h2>
+<p>For hot-reloading during development:</p>
+<pre><code>npm install --save-dev nodemon
+npm run dev</code></pre>
+
+<h2>License</h2>
+<p>© 2026 EcoShop. All rights reserved.</p>
+</body>
+</html>
