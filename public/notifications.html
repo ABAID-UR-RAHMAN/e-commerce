@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="notifications">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="buyer.html">Buyer</a>
+        <a class="nav-button" href="seller.html">Seller</a>
+        <a class="nav-button" href="messages.html">Messages</a>
+        <a class="nav-button" href="account.html">Account</a>
+        <span id="nav-user-status" class="badge">Guest</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <section class="section-panel">
+      <div class="section-title">Notifications center</div>
+      <p>Receive updates for orders, invoices, buyer messages, and marketplace activity in one place.</p>
+    </section>
+
+    <section style="margin-top:1.5rem;">
+      <div id="notifications-list" class="cards-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Stay updated. Real-time order, payment, and message notifications.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
