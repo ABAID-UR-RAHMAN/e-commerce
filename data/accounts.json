@@ -1,0 +1,12 @@
+[
+  {
+    "id": "u1",
+    "firstName": "Demo",
+    "lastName": "Buyer",
+    "email": "buyer@demo.com",
+    "password": "$2b$10$uNf5lQX7uQj/2xqkG9h6pOJHcGq0a2k/7h6sY1YFq1bTjY6eKf2Py",
+    "role": "buyer",
+    "preferences": { "newsletter": true, "productAlerts": true },
+    "createdAt": "2026-07-01T00:00:00.000Z"
+  }
+]
