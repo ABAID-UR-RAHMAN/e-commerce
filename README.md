@@ -1,82 +1,354 @@
-🛠️ Summary of Key Changes
-1. Database & Fault-Tolerant Infrastructure
-Automatic Embedded Fallback: Enhanced 
-database.js
- to connect to standalone MongoDB when available, with automatic fallback to embedded MongoMemoryServer for seamless zero-setup local dev/test execution.
-Index Management: Automated index initialization on startup (accounts.email unique, products.title/description/category text search, invoices.buyer/seller).
-CLI Database Seed Script: Added 
-seed.js
- (npm run seed) to automatically populate demo buyer/seller accounts, products, and notifications.
-2. Security & Middleware Hardening
-Security Headers & Rate Limiting: Added helmet, cors, and express-rate-limit (300 req/15min) in 
-server.js
-.
-Health Check Endpoint: Added GET /health route returning server status, uptime, and timestamp.
-Centralized Error Handler: Created 
-errorHandler.js
- to gracefully intercept unhandled exceptions and prevent process crashes.
-3. Complete API Implementation
-Product CRUD: Implemented single product lookup GET /api/products/:id, update PUT /api/products/:id, and delete DELETE /api/products/:id with strict role & seller ownership authorization in 
-products.js
-.
-User Profile & Seller Analytics: Added PUT /api/users/me for profile updates and GET /api/seller/stats for gross revenue & orders analytics in 
-users.js
-.
-Checkout & Notifications: Refactored checkout in 
-invoices.js
- with item seller mapping and notification delivery. Added read status toggles in 
-messages.js
- and 
-notifications.js
-.
-4. Containerization
-Dockerfile & Compose: Fixed container entrypoint in 
-Dockerfile
- (node src/server.js), added health checks, and updated 
-docker-compose.yml
-.
-5. Frontend Redesign & UX Polish
-Enterprise Design System: Upgraded 
-styles.css
- with Google Fonts (Plus Jakarta Sans & Outfit), sleek dark slate theme, glassmorphic cards, and hover micro-animations.
-Modal Popup System: Replaced native browser alert()s in 
-app.js
- with responsive Modal Dialogs for product previews, invoice details, and edit forms.
-Cart & Filtering: Added persistent localStorage cart, category filtering, search sorting, and live seller analytics.
-🧪 Verification & Test Results
-Automated Integration Test Suite (npm test)
-bash
+# EcoShop
 
+A modern full-stack e-commerce platform featuring secure authentication, seller and buyer workflows, product management, order processing, notifications, analytics, and a production-ready backend architecture.
+
+---
+
+# Features
+
+## Database & Infrastructure
+
+### Automatic Database Fallback
+
+* Connects to a standalone MongoDB instance when available.
+* Automatically falls back to an embedded MongoMemoryServer for local development and testing.
+* Enables zero-configuration setup for new developers.
+
+### Automated Index Management
+
+Database indexes are initialized automatically during server startup for improved performance.
+
+Configured indexes include:
+
+* **Accounts**
+
+  * Unique email index
+* **Products**
+
+  * Full-text search on title, description, and category
+* **Invoices**
+
+  * Buyer index
+  * Seller index
+
+### Database Seeding
+
+A built-in seed utility populates the application with demo data, including:
+
+* Buyer accounts
+* Seller accounts
+* Sample products
+* Notifications
+
+Run:
+
+```bash
+npm run seed
+```
+
+---
+
+# Security
+
+The backend is hardened using industry-standard middleware.
+
+### Included Security Features
+
+* Helmet security headers
+* CORS protection
+* Express Rate Limiting
+
+  * **300 requests per 15 minutes** per IP
+* Centralized error handling
+* Graceful exception recovery
+
+---
+
+# Health Monitoring
+
+A dedicated health endpoint provides runtime information.
+
+### Endpoint
+
+```http
+GET /health
+```
+
+Response includes:
+
+* Server status
+* Uptime
+* Current timestamp
+
+---
+
+# API Features
+
+## Authentication
+
+* User registration
+* Secure login
+* JWT authentication
+* Role-based authorization
+
+Supported roles:
+
+* Buyer
+* Seller
+
+---
+
+## Products
+
+Complete CRUD functionality.
+
+### Endpoints
+
+| Method | Endpoint            | Description                  |
+| ------ | ------------------- | ---------------------------- |
+| GET    | `/api/products`     | List products                |
+| GET    | `/api/products/:id` | Get product details          |
+| POST   | `/api/products`     | Create product (Seller only) |
+| PUT    | `/api/products/:id` | Update owned product         |
+| DELETE | `/api/products/:id` | Delete owned product         |
+
+Authorization ensures sellers may modify only their own listings.
+
+---
+
+## User Profiles
+
+### Endpoints
+
+| Method | Endpoint        |
+| ------ | --------------- |
+| GET    | `/api/me`       |
+| PUT    | `/api/users/me` |
+
+Users can:
+
+* Update profile information
+* Retrieve current profile
+
+---
+
+## Seller Analytics
+
+Dedicated analytics endpoint:
+
+```http
+GET /api/seller/stats
+```
+
+Provides:
+
+* Gross revenue
+* Total orders
+* Seller performance metrics
+
+---
+
+## Checkout & Orders
+
+Checkout workflow includes:
+
+* Seller mapping for purchased items
+* Invoice generation
+* Notification delivery
+* Order tracking support
+
+---
+
+## Notifications
+
+Notification system supports:
+
+* Automatic delivery
+* Read/unread status
+* Notification history
+
+---
+
+## Messaging
+
+Messaging functionality includes:
+
+* Read status tracking
+* Conversation updates
+* Notification integration
+
+---
+
+# Frontend
+
+The frontend has been redesigned with a modern enterprise-inspired design system.
+
+### Highlights
+
+* Glassmorphism interface
+* Responsive layouts
+* Google Fonts
+
+  * Plus Jakarta Sans
+  * Outfit
+* Dark Slate theme
+* Smooth hover animations
+* Improved spacing and typography
+
+---
+
+# User Experience Improvements
+
+### Modal Dialog System
+
+Replaced browser `alert()` dialogs with responsive modal components.
+
+Supported modals include:
+
+* Product previews
+* Invoice details
+* Product editing
+* Confirmation dialogs
+
+### Shopping Cart
+
+* Persistent cart using Local Storage
+* Automatic cart restoration
+* Smooth checkout flow
+
+### Search & Filtering
+
+* Live product search
+* Category filtering
+* Product sorting
+* Improved browsing experience
+
+### Seller Dashboard
+
+Includes live analytics and revenue insights.
+
+---
+
+# Docker Support
+
+Containerized deployment is fully supported.
+
+### Improvements
+
+* Updated Docker entrypoint
+
+```text
+node src/server.js
+```
+
+* Docker health checks
+* Updated Docker Compose configuration
+
+---
+
+# Testing
+
+The project includes a comprehensive automated integration test suite.
+
+## Test Results
+
+```text
 PASS tests/api.test.js
-  EcoShop Production API Tests
-    Health Check
-      ✓ GET /health should return 200 OK
-    Authentication API
-      ✓ POST /api/signup - create seller account
-      ✓ POST /api/signup - create buyer account
-      ✓ POST /api/login - login existing account
-      ✓ POST /api/login - reject invalid credentials
-    Products API
-      ✓ GET /api/products - list products
-      ✓ POST /api/products - seller can create product
-      ✓ POST /api/products - buyer cannot create product
-      ✓ PUT /api/products/:id - seller can update owned product
-      ✓ DELETE /api/products/:id - seller can delete owned product
-    User Profile API
-      ✓ GET /api/me - fetch current profile
-      ✓ PUT /api/me - update current profile
+
+EcoShop Production API Tests
+
+✓ Health Check
+✓ User Registration
+✓ User Login
+✓ Invalid Login Handling
+✓ Product Listing
+✓ Product Creation
+✓ Role-Based Product Authorization
+✓ Product Update
+✓ Product Deletion
+✓ Profile Retrieval
+✓ Profile Update
+
 Test Suites: 1 passed, 1 total
 Tests:       12 passed, 12 total
-##🚀 How to Run##
-Run Dev Server:
-bash
+```
 
+---
+
+# Getting Started
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Start Development Server
+
+```bash
 npm start
-Run Test Suite:
-bash
+```
 
-npm test
-Seed Database:
-bash
+---
 
+## Seed Demo Data
+
+```bash
 npm run seed
+```
+
+---
+
+## Run Tests
+
+```bash
+npm test
+```
+
+---
+
+# Technology Stack
+
+## Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* MongoMemoryServer
+* JWT Authentication
+
+## Security
+
+* Helmet
+* CORS
+* Express Rate Limit
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+## Containerization
+
+* Docker
+* Docker Compose
+
+---
+
+# Project Highlights
+
+* Production-ready REST API
+* Role-based authentication & authorization
+* Secure middleware configuration
+* Automatic database fallback
+* Full Product CRUD
+* Seller analytics dashboard
+* Modern responsive UI
+* Persistent shopping cart
+* Notification system
+* Docker support
+* Automated integration testing
+* Zero-configuration local development
