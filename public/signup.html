@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="signup">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="index.html">Home</a>
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="login.html">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <div style="max-width: 580px; margin: 2rem auto;">
+      <div class="section-panel" style="background: #ffffff; padding: 2.5rem; border-radius: 20px; box-shadow: var(--shadow-lg);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <div style="font-size: 3rem; margin-bottom: 0.5rem;">✨</div>
+          <h2 style="margin: 0; font-size: 1.8rem; color: var(--text);">Create Your Free Account</h2>
+          <p style="color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem;">Join thousands of shoppers and independent vendors on EcoShop.</p>
+        </div>
+
+        <form id="signup-form" class="form-grid">
+          <div class="form-grid two-column">
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">First Name</label>
+              <input name="firstName" type="text" placeholder="John" required />
+            </div>
+            <div>
+              <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">Last Name</label>
+              <input name="lastName" type="text" placeholder="Doe" required />
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">Email Address</label>
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">Password</label>
+            <input name="password" type="password" placeholder="At least 6 characters" required />
+          </div>
+
+          <div>
+            <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">Account Role</label>
+            <select name="role" id="signup-role" required style="padding: 0.85rem 1rem;">
+              <option value="buyer">🛍️ Buyer — I want to shop and track orders</option>
+              <option value="seller">🏪 Seller — I want to publish products and manage sales</option>
+            </select>
+          </div>
+
+          <label style="display:flex; align-items:center; gap:0.6rem; font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem;">
+            <input type="checkbox" name="terms" required style="width: auto;" />
+            <span>I agree to EcoShop Terms of Service and Privacy Policy</span>
+          </label>
+
+          <button class="primary-button" type="submit" style="width: 100%; padding: 0.9rem; font-size: 1rem; margin-top: 0.5rem;">Create Account</button>
+          <div id="signup-feedback" style="margin-top: 1rem;"></div>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.92rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 1.25rem;">
+          Already have an account? <a href="login.html" style="color: var(--accent); font-weight: 700;">Sign in here</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Enterprise multi-vendor registration.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
