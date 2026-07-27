@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="search">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="index.html">Home</a>
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="buyer.html">Buyer</a>
+        <a class="nav-button" href="seller.html">Seller</a>
+        <a class="nav-button" href="account.html">Account</a>
+        <span id="nav-user-status" class="badge">Guest</span>
+        <span class="badge">Cart: <span id="nav-cart-count">0</span></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <div id="page-feedback" style="margin-bottom: 1rem;"></div>
+
+    <section class="section-panel">
+      <div class="section-title">Search Marketplace Products</div>
+      <p>Enter a keyword, category name, or seller description to find products across the entire catalog.</p>
+      <div class="form-grid" style="margin-top:1rem;">
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+          <input id="search-query" type="search" placeholder="Search by title, category, description..." style="flex:1;" />
+          <button id="search-button" class="primary-button" type="button">Search Catalog</button>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:2rem;">
+      <div class="section-title">Search Results</div>
+      <div id="search-results" class="product-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Find exactly what you need. Advanced search and filtering.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
