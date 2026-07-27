@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="messages">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="buyer.html">Buyer</a>
+        <a class="nav-button" href="seller.html">Seller</a>
+        <a class="nav-button" href="notifications.html">Notifications</a>
+        <a class="nav-button" href="account.html">Account</a>
+        <span id="nav-user-status" class="badge">Guest</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <section class="panel-grid">
+      <div class="panel">
+        <h3>Marketplace messages</h3>
+        <p>Keep buyer and seller discussions organized with one professional conversation center.</p>
+      </div>
+      <div class="panel">
+        <h3>Response quality</h3>
+        <p>Fast replies help close deals and keep customers engaged.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:1.5rem; display:grid; gap:1.5rem; grid-template-columns: 1fr 1.4fr;">
+      <div class="panel">
+        <div class="section-title">Conversations</div>
+        <div id="messages-list"></div>
+      </div>
+      <div class="panel">
+        <div class="section-title">Message thread</div>
+        <div id="message-thread"><p>Select a conversation to view and reply.</p></div>
+        <div id="messages-feedback"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Direct communication between buyers and sellers. Secure messaging.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
