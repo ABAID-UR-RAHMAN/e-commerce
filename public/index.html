@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoShop | Multi-Vendor E-Commerce Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="marketplace">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="search.html">Search</a>
+        <a class="nav-button" href="buyer.html">Buyer Hub</a>
+        <a class="nav-button" href="seller.html">Seller Portal</a>
+        <a class="nav-button" href="account.html">Account</a>
+        <span id="nav-user-status" class="badge light">Guest</span>
+        <span class="badge">Cart: <span id="nav-cart-count">0</span></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <div id="page-feedback"></div>
+
+    <!-- Full Landing Screen GIF Hero Section -->
+    <section class="hero-full-screen">
+      <img class="hero-bg-gif" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1920&q=80" alt="Marketplace Showcase Banner" />
+      <div class="hero-full-overlay">
+        <span class="badge" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(8px); margin-bottom: 1rem;">✨ Next-Gen Multi-Vendor Commerce</span>
+        <h1>Scale Your E-Commerce Storefront to Millions Worldwide</h1>
+        <p>Enterprise multi-vendor platform featuring real-time inventory management, automated buyer invoicing, direct vendor messaging, and role-based analytics.</p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top: 1.5rem;">
+          <a class="primary-button" href="signup.html" style="padding: 0.9rem 2rem; font-size: 1rem;">Get Started Free</a>
+          <a class="secondary-button" href="marketplace.html" style="padding: 0.9rem 2rem; font-size: 1rem; background: rgba(255,255,255,0.9); border:none;">Explore Marketplace</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section style="margin-top:3.5rem;">
+      <div class="section-title">Trending Marketplace Products</div>
+      <div id="marketplace-products" class="product-grid"></div>
+    </section>
+
+    <!-- Commerce Capabilities -->
+    <section style="margin-top:4rem;">
+      <div class="section-title">Enterprise Commerce Suite</div>
+      <div class="cards-grid">
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📄</div>
+          <h3>Automated Invoicing</h3>
+          <p>Generate instant itemized PDF/digital receipts with seller attribution and tax audit histories.</p>
+        </div>
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛒</div>
+          <h3>Dynamic Marketplace</h3>
+          <p>Real-time category filtering, price sorting, rating analytics, and instant local cart storage.</p>
+        </div>
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">💬</div>
+          <h3>Vendor Messaging</h3>
+          <p>Direct encrypted buyer-to-seller messaging threads with unread counters and instant replies.</p>
+        </div>
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔔</div>
+          <h3>Live Activity Alerts</h3>
+          <p>Notification feeds keep vendors and shoppers informed of order completions and price drops.</p>
+        </div>
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📊</div>
+          <h3>Store Analytics</h3>
+          <p>Sellers track gross revenue, items sold, active listing stock, and monthly growth trends.</p>
+        </div>
+        <div class="card fade-in">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔒</div>
+          <h3>JWT Security</h3>
+          <p>Bcrypt password encryption, cookie HTTP-Only authentication, and input sanitization.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose EcoShop -->
+    <section style="margin-top:4rem;">
+      <div class="section-title">Why Industry Leaders Choose EcoShop</div>
+      <div class="cards-grid">
+        <div class="card fade-in">
+          <h4 style="color: var(--accent);">⚡ Ultra-Fast Search</h4>
+          <p>Indexed database architecture yields sub-20ms search speeds across hundreds of thousands of SKUs.</p>
+        </div>
+        <div class="card fade-in">
+          <h4 style="color: var(--emerald);">📱 Mobile-Optimized</h4>
+          <p>Fluid responsive design scales gracefully across smartphones, tablets, and desktop workstations.</p>
+        </div>
+        <div class="card fade-in">
+          <h4 style="color: var(--accent);">🌐 Global Storefronts</h4>
+          <p>Support for multi-vendor storefronts, international currencies, and localized tax calculations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow section -->
+    <section style="margin-top:4rem;">
+      <div class="section-panel fade-in" style="background: linear-gradient(135deg, #e0e7ff 0%, #ffffff 100%); border-color: #c7d2fe;">
+        <div class="section-title">How EcoShop Works</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+          <div>
+            <div style="font-size: 2rem; color: var(--accent); font-weight: 800; margin-bottom: 0.5rem;">01</div>
+            <h4>Register Account</h4>
+            <p style="color: var(--muted); font-size: 0.92rem;">Join as a Buyer or Seller in under 60 seconds.</p>
+          </div>
+          <div>
+            <div style="font-size: 2rem; color: var(--accent); font-weight: 800; margin-bottom: 0.5rem;">02</div>
+            <h4>Publish & Discover</h4>
+            <p style="color: var(--muted); font-size: 0.92rem;">Sellers add inventory, buyers explore verified catalog items.</p>
+          </div>
+          <div>
+            <div style="font-size: 2rem; color: var(--accent); font-weight: 800; margin-bottom: 0.5rem;">03</div>
+            <h4>Secure Checkout</h4>
+            <p style="color: var(--muted); font-size: 0.92rem;">Seamless cart checkout with instant billing invoice generation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Stats -->
+    <section style="margin-top:4rem;">
+      <div class="section-title">Platform Performance Overview</div>
+      <div class="stats-row">
+        <div class="stats-card fade-in">
+          <span>Active Users</span>
+          <strong>25,000+</strong>
+        </div>
+        <div class="stats-card fade-in">
+          <span>Products Listed</span>
+          <strong>120,000+</strong>
+        </div>
+        <div class="stats-card fade-in">
+          <span>Monthly Orders</span>
+          <strong>45,000+</strong>
+        </div>
+        <div class="stats-card fade-in">
+          <span>Gross Revenue</span>
+          <strong>$12.5M+</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Enterprise multi-vendor marketplace platform.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Scroll observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
