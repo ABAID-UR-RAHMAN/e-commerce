@@ -20,44 +20,6 @@ async function seed(existingDb = null) {
   // Hashed password for demo accounts ("Password123!")
   const defaultPasswordHash = await bcrypt.hash('Password123!', 10);
 
-  const initialAccounts = [
-    {
-      firstName: 'Demo',
-      lastName: 'Buyer',
-      email: 'buyer@demo.com',
-      password: defaultPasswordHash,
-      role: 'buyer',
-      preferences: { newsletter: true, productAlerts: true },
-      createdAt: new Date().toISOString()
-    },
-    {
-      firstName: 'Aria',
-      lastName: 'Vance',
-      email: 'aria@demo.com',
-      password: defaultPasswordHash,
-      role: 'seller',
-      preferences: { newsletter: true, productAlerts: true },
-      createdAt: new Date().toISOString()
-    },
-    {
-      firstName: 'Voyage',
-      lastName: 'Gear',
-      email: 'voyage@demo.com',
-      password: defaultPasswordHash,
-      role: 'seller',
-      preferences: { newsletter: false, productAlerts: true },
-      createdAt: new Date().toISOString()
-    }
-  ];
-
-  for (const acc of initialAccounts) {
-    const exists = await accountsColl.findOne({ email: acc.email });
-    if (!exists) {
-      await accountsColl.insertOne(acc);
-      console.log(`  ✓ Account created: ${acc.email} (${acc.role})`);
-    }
-  }
-
   const initialProducts = [
     {
       title: 'Aurora Pro Graphic Tablet',
