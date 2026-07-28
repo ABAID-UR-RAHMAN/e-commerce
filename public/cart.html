@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart | EcoShop</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="cart">
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span>🛍️</span>EcoShop</a>
+      <nav class="nav-links">
+        <a class="nav-button" href="marketplace.html">Marketplace</a>
+        <a class="nav-button" href="search.html">Search</a>
+        <a class="nav-button" href="account.html">Account</a>
+      </nav>
+      <div class="nav-links">
+        <a href="cart.html" class="nav-button">Cart (<span id="nav-cart-count">0</span>)</a>
+        <a href="account.html" class="primary-button" data-nav-account>Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell container">
+    <div id="cart-feedback" style="margin-bottom: 1rem;"></div>
+
+    <section>
+      <div class="section-title">Your Shopping Cart</div>
+      <div id="cart-summary">
+        <div class="card"><p>Loading your cart...</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 EcoShop. Your trusted shopping dashboard. Secure checkout. Fast delivery.</p>
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
