@@ -18,6 +18,23 @@ router.get('/', authMiddleware, async (req, res, next) => {
   }
 });
 
+// Get a single invoice by its ID
+router.get('/:id', authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid invoice ID format' });
+    }
+    const invoice = await getDb().collection('invoices').findOne({ _id: new ObjectId(id) });
+    if (!invoice || (invoice.buyer !== req.user.email && !invoice.seller.includes(req.user.email))) {
+      return res.status(404).json({ error: 'Invoice not found or access denied' });
+    }
+    res.json(invoice);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Create checkout invoice
 router.post('/checkout', authMiddleware, async (req, res, next) => {
   try {
