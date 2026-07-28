@@ -131,6 +131,11 @@ h1, h2, h3, h4, .brand {
   cursor: pointer;
 }
 
+.primary-button.large {
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+}
+
 .primary-button {
   background: linear-gradient(135deg, var(--accent), #6366f1);
   color: white;
@@ -367,6 +372,71 @@ h1, h2, h3, h4, .brand {
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
   margin-top: 0.5rem;
+}
+
+/* Product Detail Page Specific Styles */
+.product-detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 3rem;
+}
+
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .product-detail-grid {
+    grid-template-columns: 3fr 4fr;
+    align-items: start;
+  }
+}
+
+.product-image-container.large-image {
+  height: auto;
+  min-height: 350px;
+  font-size: 6rem;
+  border-radius: 16px;
+}
+
+.product-title-large {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.75rem 0 1rem;
+}
+
+.product-description-large {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.product-purchase-box {
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.product-purchase-box .price {
+  font-size: 2.2rem;
+}
+
+.related-products-section {
+  margin-top: 4rem;
 }
 
 /* Filter Bar */
