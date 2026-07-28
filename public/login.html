@@ -27,12 +27,6 @@
           <p style="color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem;">Sign in to your EcoShop buyer or seller workspace.</p>
         </div>
 
-        <!-- Pre-fill Quick Demo Buttons -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
-          <button class="secondary-button" type="button" onclick="fillDemo('buyer@demo.com', 'Password123!')" style="font-size: 0.85rem; padding: 0.6rem;">⚡ Quick Buyer Login</button>
-          <button class="secondary-button" type="button" onclick="fillDemo('aria@demo.com', 'Password123!')" style="font-size: 0.85rem; padding: 0.6rem;">⚡ Quick Seller Login</button>
-        </div>
-
         <form id="login-form" class="form-grid">
           <div>
             <label style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; display: block;">Email Address</label>
@@ -58,11 +52,5 @@
   </footer>
 
   <script src="app.js"></script>
-  <script>
-    function fillDemo(email, password) {
-      document.querySelector('#loginEmail').value = email;
-      document.querySelector('#loginPassword').value = password;
-    }
-  </script>
 </body>
 </html>
