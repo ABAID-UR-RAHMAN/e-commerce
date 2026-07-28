@@ -12,9 +12,11 @@ const rateLimit = require('express-rate-limit');
 
 const { connectToDatabase } = require('./config/database');
 const { errorHandler } = require('./middleware/errorHandler');
+const { initSocket, cacheProducts } = require('./socket');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+const server = require('http').createServer(app);
 
 // Security and Rate Limiting
 app.use(helmet({
@@ -63,6 +65,9 @@ app.use('/api/invoices', invoicesRouter);
 const usersRouter = require('./api/users');
 app.use('/api', usersRouter);
 
+const cartRouter = require('./api/cart');
+app.use('/api', cartRouter);
+
 // Serve README
 app.get('/readme', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'README.html'));
@@ -74,8 +79,14 @@ app.use(errorHandler);
 // Start server if main module
 if (require.main === module) {
   connectToDatabase()
-    .then(() => {
-      app.listen(PORT, () => console.log(`✓ EcoShop backend listening on http://localhost:${PORT}`));
+    .then(async () => {
+      const productsCache = await cacheProducts();
+      const io = initSocket(server, productsCache);
+      app.use((req, res, next) => {
+        req.io = io;
+        next();
+      });
+      server.listen(PORT, () => console.log(`✓ EcoShop backend listening on http://localhost:${PORT}`));
     })
     .catch(err => {
       console.error('✗ Failed to connect to MongoDB', err);
