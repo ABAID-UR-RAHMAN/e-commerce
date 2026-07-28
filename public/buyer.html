@@ -16,8 +16,7 @@
         <a class="nav-button" href="messages.html">Messages</a>
         <a class="nav-button" href="invoices.html">Invoices</a>
         <a class="nav-button" href="account.html">Account</a>
-        <span id="nav-user-status" class="badge">Guest</span>
-        <span class="badge">Cart: <span id="nav-cart-count">0</span></span>
+        <a href="cart.html" class="nav-button">Cart (<span id="nav-cart-count">0</span>)</a>
       </nav>
     </div>
   </header>
@@ -30,11 +29,6 @@
       <p>Manage your shopping cart, discover curated items, review past orders, and communicate directly with sellers.</p>
     </div>
 
-    <section style="margin-bottom: 2.5rem;">
-      <div class="section-title">Shopping Cart</div>
-      <div id="cart-summary"></div>
-    </section>
-
     <section>
       <div class="section-title">Explore Catalog</div>
       <div id="buyer-products" class="product-grid"></div>
@@ -44,6 +38,7 @@
   <footer class="footer">
     <p>© 2026 EcoShop. Your trusted shopping dashboard. Secure checkout. Fast delivery.</p>
   </footer>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
