@@ -1,20 +1,32 @@
 // Frontend API-driven app.js - Professional E-Commerce Platform
 let CURRENT_USER = null;
-let CART = loadCartFromStorage();
+let CART = [];
+const socket = io();
 
-function loadCartFromStorage() {
-  try {
-    const raw = localStorage.getItem('ECO_CART');
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    return [];
+socket.on('connect', () => {
+  console.log('Connected to socket server');
+});
+
+socket.on('cart-updated', (updatedCart) => {
+  console.log('Cart updated received', updatedCart);
+  CART = updatedCart;
+  renderNavStatus();
+  if (['buyer', 'cart'].includes(document.body.dataset.page)) {
+    renderCartSummary();
   }
-}
+});
 
-function saveCartToStorage() {
+async function fetchCart() {
+  if (!CURRENT_USER) return;
   try {
-    localStorage.setItem('ECO_CART', JSON.stringify(CART));
-  } catch (e) {}
+    const res = await api('/cart');
+    if (res.ok) {
+      CART = res.cart;
+      renderNavStatus();
+    }
+  } catch (error) {
+    console.error('Failed to fetch cart', error);
+  }
 }
 
 async function api(path, opts = {}) {
@@ -80,8 +92,16 @@ function getProductEmoji(category) {
 async function refreshCurrentUser() {
   try {
     const me = await api('/me');
-    if (!me || me.error) { CURRENT_USER = null; } else { CURRENT_USER = me; }
-  } catch (e) { CURRENT_USER = null; }
+    if (!me || me.error) {
+      CURRENT_USER = null;
+    } else {
+      CURRENT_USER = me;
+      socket.emit('join-room', `user-${me.id}`);
+    }
+  } catch (e) {
+    CURRENT_USER = null;
+  }
+  await fetchCart();
   renderNavStatus();
 }
 
@@ -95,7 +115,7 @@ function renderNavStatus() {
   }
   if (buyerCount) {
     const totalCount = CART.reduce((s, i) => s + (i.qty || 0), 0);
-    buyerCount.textContent = `${totalCount}`;
+    buyerCount.textContent = totalCount;
   }
   
   if (accountBtn) {
@@ -140,7 +160,7 @@ function renderProductCards(products, containerSelector, showActions = true) {
         </div>
         ${showActions ? `
         <div class="product-actions">
-          <button class="secondary-button" type="button" onclick="previewProduct('${product._id}')">Preview</button>
+e          <a href="product.html?id=${product._id}" class="secondary-button">Details</a>
           <button class="primary-button" type="button" onclick="buyProduct('${product._id}')">Add to cart</button>
         </div>` : ''}
       </div>
@@ -148,55 +168,17 @@ function renderProductCards(products, containerSelector, showActions = true) {
   `).join('');
 }
 
-async function previewProduct(id) {
-  const products = await api('/products');
-  const p = products.find(x => x._id === id);
-  if (!p) return;
-
-  openModal('Product Details', `
-    <div style="display:grid; gap:1.25rem;">
-      <div class="product-image-container" style="height: 180px;">
-        ${getProductEmoji(p.category)}
-      </div>
-      <div>
-        <span class="badge">${p.category}</span>
-        <h2 style="margin: 0.5rem 0; color: white;">${p.title}</h2>
-        <h3 style="color: #38bdf8; font-size: 1.6rem; margin: 0 0 1rem;">${formatCurrency(p.price)}</h3>
-        <p style="color: var(--muted); line-height: 1.6;">${p.description}</p>
-      </div>
-      <div style="background: rgba(15,23,42,0.6); padding: 1rem; border-radius: 10px; font-size: 0.9rem;">
-        <p style="margin: 0 0 0.5rem;"><strong>Seller:</strong> ${p.seller}</p>
-        <p style="margin: 0 0 0.5rem;"><strong>Availability:</strong> ${p.availability}</p>
-        <p style="margin: 0;"><strong>Rating:</strong> ★ ${p.rating || 4.8} / 5</p>
-      </div>
-      <div style="display:flex; gap:1rem; justify-content:flex-end;">
-        <button class="secondary-button" onclick="closeModal()">Close</button>
-        <button class="primary-button" onclick="buyProduct('${p._id}'); closeModal();">Add to Cart</button>
-      </div>
-    </div>
-  `);
-}
-
 async function buyProduct(productId) {
   if (!CURRENT_USER || CURRENT_USER.role !== 'buyer') {
-    window.location.href = 'login.html';
+    // Redirect to login but remember where to come back to
+    window.location.href = `login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
     return;
   }
+  socket.emit('add-to-cart', { productId });
   const products = await api('/products');
   const product = products.find(p => p._id === productId);
-  if (!product) return;
-
-  const existing = CART.find(i => i.id === productId);
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    CART.push({ id: product._id, title: product.title, price: product.price, qty: 1 });
-  }
-  saveCartToStorage();
-  renderNavStatus();
-  showMessage('#page-feedback', `✓ ${product.title} added to cart!`);
-  if (document.body.dataset.page === 'buyer') {
-    renderCartSummary();
+  if (product) {
+    showMessage('#page-feedback', `${product.title} added to cart!`);
   }
 }
 
@@ -225,6 +207,25 @@ async function initMarketplacePage() {
   if (sortSelect) sortSelect.addEventListener('change', applyFilters);
 
   renderProductCards(products, '#marketplace-products');
+  initHomepageStats();
+}
+
+async function initHomepageStats() {
+  try {
+    const res = await api('/stats');
+    if (res && res.ok) {
+      const { users, products, orders, revenue } = res.stats;
+      const usersEl = document.querySelector('#global-stat-users');
+      const productsEl = document.querySelector('#global-stat-products');
+      const ordersEl = document.querySelector('#global-stat-orders');
+      const revenueEl = document.querySelector('#global-stat-revenue');
+
+      if (usersEl) usersEl.textContent = `${users.toLocaleString()}+`;
+      if (productsEl) productsEl.textContent = `${products.toLocaleString()}+`;
+      if (ordersEl) ordersEl.textContent = `${orders.toLocaleString()}+`;
+      if (revenueEl) revenueEl.textContent = `$${(revenue / 1000000).toFixed(1)}M+`;
+    }
+  } catch(e) {}
 }
 
 // Signup handler
@@ -243,7 +244,12 @@ async function initSignupPage() {
     const res = await api('/signup', { method: 'POST', body: { firstName: data.firstName, lastName: data.lastName, email: data.email, password: data.password, role: data.role } });
     if (res && res.ok) {
       showMessage('#signup-feedback', '✓ Account created! Redirecting...');
-      setTimeout(() => { window.location.href = data.role === 'seller' ? 'seller.html' : 'buyer.html'; }, 900);
+      await refreshCurrentUser(); // Log the user in
+      setTimeout(() => {
+        // Redirect to previous page if specified, or dashboard
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+        window.location.href = redirectUrl || (data.role === 'seller' ? 'seller.html' : 'buyer.html');
+      }, 900);
     } else {
       showMessage('#signup-feedback', res.error || 'Signup failed', 'error');
     }
@@ -263,7 +269,11 @@ async function initLoginPage() {
     if (res && res.ok) {
       showMessage('#login-feedback', '✓ Login successful! Redirecting...');
       await refreshCurrentUser();
-      setTimeout(() => { window.location.href = res.account.role === 'seller' ? 'seller.html' : 'buyer.html'; }, 700);
+      setTimeout(() => {
+        // Redirect to previous page if specified, or dashboard
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+        window.location.href = redirectUrl || (res.account.role === 'seller' ? 'seller.html' : 'buyer.html');
+      }, 700);
     } else {
       showMessage('#login-feedback', res.error || 'Login failed', 'error');
     }
@@ -280,7 +290,6 @@ async function initAccountPage() {
       await api('/logout', { method: 'POST' });
       CURRENT_USER = null;
       CART = [];
-      saveCartToStorage();
       window.location.href = 'login.html';
     });
   }
@@ -369,19 +378,20 @@ function renderCartSummary() {
       if (res && res.ok) {
         CART = [];
         saveCartToStorage();
-        renderCartSummary();
-        renderNavStatus();
-        showMessage('#buyer-feedback', `✓ Order complete! Invoice ${res.invoice.id} created.`);
+        window.location.href = `order-confirmation.html?invoiceId=${res.invoice._id}`;
       } else {
-        showMessage('#buyer-feedback', res.error || 'Checkout failed', 'error');
+        showMessage('#cart-feedback', res.error || 'Checkout failed', 'error');
       }
     });
   }
 }
 
 function removeFromCart(idx) {
-  CART.splice(idx, 1);
-  saveCartToStorage();
+  socket.emit('remove-from-cart', { idx });
+}
+
+async function initCartPage() {
+  await refreshCurrentUser();
   renderCartSummary();
   renderNavStatus();
 }
@@ -428,7 +438,7 @@ async function initSellerPage() {
         addProductForm.reset();
         const updated = await api('/products');
         renderSellerInventory(updated.filter(p => p.seller === CURRENT_USER.email));
-        showMessage('#seller-feedback', '✓ Product published successfully!');
+        showMessage('#seller-feedback', 'Product published successfully!');
       } else {
         showMessage('#seller-feedback', res.error || 'Publish failed', 'error');
       }
@@ -675,7 +685,7 @@ async function initSettingsPage() {
 
     if (res && res.ok) {
       await refreshCurrentUser();
-      showMessage('#settings-feedback', '✓ Account preferences updated successfully!');
+      showMessage('#settings-feedback', 'Account preferences updated successfully!');
     } else {
       showMessage('#settings-feedback', res.error || 'Failed to update preferences', 'error');
     }
@@ -755,8 +765,122 @@ async function viewInvoice(id) {
   `);
 }
 
+async function initProductPage() {
+  await refreshCurrentUser();
+  const container = document.querySelector('#product-detail-content');
+  const productId = new URLSearchParams(window.location.search).get('id');
+
+  if (!productId) {
+    container.innerHTML = '<div class="card"><p>No product specified. Return to the <a href="index.html">marketplace</a>.</p></div>';
+    return;
+  }
+
+  try {
+    const p = await api(`/products/${productId}`);
+    if (!p || p.error) {
+      container.innerHTML = `<div class="card"><p>Could not find product with ID ${productId}.</p></div>`;
+      return;
+    }
+
+    document.title = `${p.title} - EcoShop`;
+    container.innerHTML = `
+      <div class="product-detail-card">
+        <article class="product-detail-grid">
+          <div class="product-image-container large-image">
+            ${getProductEmoji(p.category)}
+          </div>
+          <div class="product-detail-info">
+            <span class="badge">${p.category}</span>
+            <h1 class="product-title-large">${p.title}</h1>
+            <div class="tag-row" style="margin-bottom: 1rem;">
+              <span style="color: var(--amber); font-weight: 600; font-size: 1.1rem;">★ ${p.rating || 4.8}</span>
+              <span class="badge ${p.availability === 'In stock' ? 'success' : 'amber'}">${p.availability || 'In stock'}</span>
+            </div>
+            <p class="product-description-large">${p.description}</p>
+            <p style="font-size: 0.9rem; color: var(--muted);">Sold by: <strong>${p.seller}</strong></p>
+            <div class="product-purchase-box">
+              <h2 class="price">${formatCurrency(p.price)}</h2>
+              <button class="primary-button large" type="button" onclick="buyProduct('${p._id}')">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <section class="related-products-section">
+        <h2 class="section-title">Related Products</h2>
+        <div id="related-products-grid" class="product-grid"></div>
+      </section>
+    `;
+    renderRelatedProducts(p);
+  } catch (e) {
+    container.innerHTML = '<div class="card"><p>There was an error loading this product.</p></div>';
+  }
+}
+
+async function renderRelatedProducts(currentProduct) {
+  const allProducts = await api('/products');
+  const related = allProducts.filter(p => p.category === currentProduct.category && p._id !== currentProduct._id).slice(0, 3);
+  if (related.length > 0) {
+    renderProductCards(related, '#related-products-grid', true);
+  } else {
+    const relatedContainer = document.querySelector('.related-products-section');
+    if(relatedContainer) relatedContainer.style.display = 'none';
+  }
+}
+
+async function initOrderConfirmationPage() {
+  await refreshCurrentUser();
+  const container = document.querySelector('#confirmation-content');
+  const invoiceId = new URLSearchParams(window.location.search).get('invoiceId');
+
+  if (!invoiceId) {
+    container.innerHTML = '<div class="card"><p>No order specified. View your orders in your <a href="invoices.html">account dashboard</a>.</p></div>';
+    return;
+  }
+
+  try {
+    const inv = await api(`/invoices/${invoiceId}`);
+    if (!inv || inv.error) {
+      container.innerHTML = `<div class="card"><p>Could not find details for order ID ${invoiceId}.</p></div>`;
+      return;
+    }
+
+    const itemsHtml = (inv.items || []).map(i => `
+      <li style="display:flex; justify-content:space-between; align-items:center; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <strong>${i.name}</strong>
+          <div style="font-size:0.9rem; color:var(--muted);">${i.qty} × ${formatCurrency(i.price)}</div>
+        </div>
+        <strong>${formatCurrency(i.price * i.qty)}</strong>
+      </li>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="section-panel" style="text-align:center; border-color: var(--emerald); background: rgba(16, 185, 129, 0.05);">
+        <div style="font-size: 3rem;">🎉</div>
+        <h2 style="font-size:1.8rem; margin:0.5rem 0;">Order Confirmed!</h2>
+        <p style="color:var(--muted);">Thank you for your purchase. Your order <strong>${inv.id}</strong> has been placed successfully.</p>
+        <a href="marketplace.html" class="primary-button" style="margin-top:1rem;">Continue Shopping</a>
+      </div>
+      <div class="card" style="margin-top:2rem;">
+        <h3 style="margin-top:0;">Order Summary</h3>
+        <ul style="list-style:none; padding:0; margin:0;">${itemsHtml}</ul>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:1rem; margin-top:1rem; border-top: 2px solid var(--border); font-size:1.2rem;">
+          <strong>Total Paid:</strong>
+          <strong style="color:var(--accent); font-size:1.5rem;">${formatCurrency(inv.total)}</strong>
+        </div>
+        <p style="font-size:0.9rem; color:var(--muted); margin-top:1.5rem;">A confirmation has been sent to your email and you can view this invoice anytime in your <a href="invoices.html" style="font-weight:600; color:var(--accent);">account dashboard</a>.</p>
+      </div>
+    `;
+  } catch (e) {
+    container.innerHTML = '<div class="card"><p>There was an error loading your order confirmation.</p></div>';
+  }
+}
+
 function initPage() {
   const page = document.body.dataset.page;
+  if (page !== 'product') {
+    document.body.classList.remove('product-page-active');
+  }
   switch (page) {
     case 'signup': initSignupPage(); break;
     case 'login': initLoginPage(); break;
@@ -769,7 +893,13 @@ function initPage() {
     case 'notifications': initNotificationsPage(); break;
     case 'settings': initSettingsPage(); break;
     case 'invoices': initInvoicesPage(); break;
+    case 'product': initProductPage(); break;
+    case 'cart': initCartPage(); break;
+    case 'order-confirmation': initOrderConfirmationPage(); break;
     default: refreshCurrentUser(); break;
+  }
+  if (page === 'product') {
+    document.body.classList.add('product-page-active');
   }
 }
 
