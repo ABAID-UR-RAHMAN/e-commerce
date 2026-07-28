@@ -1,4 +1,0 @@
-[
-  { "id": "p1", "title": "Aurora Graphic Tablet", "category": "Electronics", "price": 289, "availability": "In stock", "seller": "aria@demo.com", "rating": 4.8, "description": "Lightweight tablet with pro pen, ideal for designers and digital artists.", "tags": ["New", "Popular"] },
-  { "id": "p2", "title": "Luxe Leather Backpack", "category": "Fashion", "price": 149, "availability": "Limited", "seller": "voyage@demo.com", "rating": 4.6, "description": "Premium travel backpack with smart compartments and ergonomic straps.", "tags": ["Best seller"] }
-]
